@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="Template1.html">
+<head>
+<meta charset="utf-8">
+<title>Liste Patients</title>
+</head>
+<body>
+<div layout:fragment="pageContent">
+<div class="container">
+<div class="card mt-3">
+<div class="card-header">Liste Patients</div>
+<div class="card-body">
+<form method="get" th:action="@{index}">
+<label>Mot clé : </label>
+<input type="text" name="motCle" th:value="${motCle}">
+<button class="btn btn-success">Chercher</button>
+</form>
+<table class="table">
+<tr>
+<th>ID</th><th>Nom</th><th>Date</th><th>Score</th><th>Malade</th><th>Supprimer</th><th>Modifier</th>
+</tr>
+<tr th:each="p:${patients}">
+<td th:text="${p.id}"></td>
+<td th:text="${p.nom}"></td>
+<td th:text="${p.dateNaiss}"></td>
+<td th:text="${p.score}"></td>
+<td th:text="${p.malade}"></td>
+<td>
+<a onclick="return confirm('Etes vous sur?')" class="btn btn-danger" th:href="@{deletePatient(id=${p.id},motCle=${motCle},page=${currentPage},size=${size})}">Delete</a>
+</td>
+<td>
+<a class="btn btn-success" th:href="@{editPatient(id=${p.id})}">Edit</a>
+</td>
+</tr>
+</table>
+<ul class="nav nav-pills">
+<li th:each="page,status:${pages}">
+<a th:class="${status.index==currentPage?'btn btn-primary':'btn'}" 
+th:href="@{index(page=${status.index},motCle=${motCle})}" th:text="${status.index}"></a>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+
+</div>
+</body>
+</html>
